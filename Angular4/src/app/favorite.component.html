@@ -1,0 +1,87 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+      <div class="panel-headers"><b>Favorite List</b></div>
+      <div class="panel-headers">Automatic refresh: <input id="my-toggle" [(ngModel)]="toggleValue" type="checkbox" data-toggle="toggle"/> 
+        <button type="button" class="btn btn-default" (click)="refresh();">
+          <span class="glyphicon glyphicon-refresh">
+
+          </span>
+        </button> 
+        <button id="goBack" (click)="goBack()" type="button" class="btn btn-default disabled" disabled>
+          <span class="glyphicon glyphicon-chevron-right">
+
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <span style="margin: 1em;" class="col-lg-3 col-xs-12">
+              <b>
+                Sort by
+              </b>
+            </span>
+            <select id="selector1" (change)="selector1Change($event)" style="margin: 1em;" class="col-lg-6 col-xs-10">
+              <option selected>Default</option>
+              <option>Price</option>
+              <option>Change</option>
+              <option>ChangePercent</option>
+              <option>Volume</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+              <span style="margin: 1em;" class="col-lg-3 col-xs-12">
+                <b>
+                  Order
+                </b>
+              </span>
+            <select id="selector2" disabled (change)="selector2Change($event)" style="margin: 1em;" class="col-lg-6 col-xs-10">
+              <option selected>Ascending</option>
+              <option>Descending</option>
+            </select>
+          </div>
+        </div>
+    <!-- Table -->
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th >Symbol</th>
+            <th >Stock Price</th>
+            <th >Change (Change Percent)</th>
+            <th >Volume</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of tableList">
+            <td class="fav-table-col-1">
+              <a href="#" (click)="clickSymbol($event)">
+              {{entry["Symbol"]}}
+              </a>
+            </td>
+            <td class="fav-table-col-2">
+              {{entry["Price"]}}
+            </td>
+            <td class="fav-table-col-3">
+                <p class="col-8" [ngStyle]="{'color': entry['Color']}">
+                  {{entry["Change"]}} ({{entry["ChangePercent"]}}%)
+                <img class="col-4" src={{entry.Arrow}} style="width: 20px; height: 20px;">
+              </p> 
+            </td>
+            <td class="fav-table-col-4">
+              {{entry["Volume"]}}
+            </td>
+
+            <td class="fav-table-col-5">
+              <button type="button" class="btn btn-default" (click)="delete($event)">
+                <span class="glyphicon glyphicon-trash">
+
+                </span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>

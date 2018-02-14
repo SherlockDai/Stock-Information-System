@@ -1,0 +1,25 @@
+.align-left{
+    float:left !important; 
+ }
+ .align-right{
+    float:right !important; 
+ }
+ .center-text-vert{
+    line-height:30px;  /*height of the button*/
+ }
+ .center {
+    text-align: center; 
+    margin-right: 55px; /*width from the left to the far right of the button */   
+ }  
+ chart{
+     display: block;
+ }
+ .glyphicon-star {
+    color: #efcd51;
+ }
+ @media (max-width: 768px) {
+    .headerBtn{
+        width:30%;
+        font-size: 0.6em;
+    }
+}

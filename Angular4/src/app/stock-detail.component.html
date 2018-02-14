@@ -1,0 +1,188 @@
+<div class="col-sm-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="center-text-vert">
+                <button type="button" class="btn btn-default btn-sm align-left" (click)="goBack()">
+                    <span class="glyphicon glyphicon-chevron-left">
+
+                    </span>
+                </button>
+                <div class="center">  
+                    <b>Stock Details</b>
+                </div>   
+            </div>
+        </div>
+        <div class="panel-body">
+            <button type="button" class="btn headerBtn" [ngClass]="{'btn-primary': now == 'CurrentStock'}" (click)="now='CurrentStock'">
+                <span class="glyphicon glyphicon-dashboard"></span>
+                Current Stock
+            </button>
+            <button type="button" class="btn headerBtn" [ngClass]="{'btn-primary': now == 'HistoricalCharts'}" (click)="now='HistoricalCharts'; drawStock();">
+                <span class="glyphicon glyphicon-stats"></span>
+                Historical Charts
+            </button>
+            <button type="button" class="btn headerBtn" [ngClass]="{'btn-primary': now == 'NewsFeeds'}" (click)="now='NewsFeeds'">
+                <span class="glyphicon glyphicon-link"></span>
+                News Feeds
+            </button>
+            <hr >
+            <div *ngIf="now == 'CurrentStock'">
+                <div class="col-md-6">
+                    <div>
+                        <span>
+                            <b>Stock Details</b>
+                        </span>
+                        <div class="align-right">
+                            <button type="button" class="btn btn-default" [ngClass]="{'disabled': data.Price == null}" (click)="toggleStar()"><span class="glyphicon" 
+                                [ngClass]="{'glyphicon-star-empty': saved == false, 'glyphicon-star': saved == true}" aria-hidden="true"></span></button>
+                            <button class="btn btn-default" [ngClass]="{'disabled': data[current] == null}" (click)="share()">  
+                                <img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" style="width: 20px; height: 20px">
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="error"class="alert alert-danger" role="alert" style="margin-top: 10em">Error! Failed to get current stock data.</div>
+                    <div *ngIf="isEmpty('Price') && !error" style="margin-top: 10em">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                              <span class="sr-only">45% Complete</span>
+                            </div>
+                          </div>
+                    </div>
+                    <div *ngIf="!isEmpty('Price') && !error" style="margin-top: 3em">
+                        <table class="table table-striped">
+                            <tr>
+                                <td class="col_1">
+                                    Stock Ticker Symbol
+                                </td>
+                                <td class="col_2">
+                                    {{ticker}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Last Price
+                                </td>
+                                <td class="col_2">
+                                    {{last_price}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Change (Change Percent)
+                                </td>
+                                <td class="col_2">
+                                    {{change}} ({{change_percent}}%) <img src={{img_src}} style="width: 20px; height: 20px;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Timestamp
+                                </td>
+                                <td class="col_2">
+                                    {{timestamp}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Open
+                                </td>
+                                <td class="col_2">
+                                    {{open}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Close
+                                </td>
+                                <td class="col_2">
+                                    {{close}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Day's Range
+                                </td>
+                                <td class="col_2">
+                                    {{range}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col_1">
+                                    Volume
+                                </td>
+                                <td class="col_2">
+                                    {{volume}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>  
+                </div>
+                <div class="col-md-6">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" [ngClass]="{'active': current == 'Price'}" (click)="current='Price'; draw();"><a href="#">Price</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'SMA'}" (click)="current='SMA'; draw();"><a href="#">SMA</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'EMA'}" (click)="current='EMA'; draw();"><a href="#">EMA</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'STOCH'}" (click)="current='STOCH'; draw();"><a href="#">STOCH</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'RSI'}" (click)="current='RSI'; draw();"><a href="#">RSI</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'ADX'}" (click)="current='ADX'; draw();"><a href="#">ADX</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'CCI'}" (click)="current='CCI'; draw();"><a href="#">CCI</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'BBANDS'}" (click)="current='BBANDS'; draw();"><a href="#">BBANDS</a></li>
+                        <li role="presentation" [ngClass]="{'active': current == 'MACD'}" (click)="current='MACD'; draw();"><a href="#">MACD</a></li>
+                    </ul>
+                    <div *ngIf="error" class="alert alert-danger" role="alert" style="margin-top: 5em">Error! Failed to get {{current}} data.</div>
+                    <div *ngIf="isEmpty(current) && !error" style="margin-top: 5em">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                              <span class="sr-only">45% Complete</span>
+                            </div>
+                          </div>
+                    </div>
+                    <div *ngIf="!isEmpty(current) && !error">
+                        <chart [options] = "options" (load)="saveInstance($event.context)"></chart>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="now == 'HistoricalCharts'">
+                <div *ngIf="error" class="alert alert-danger" role="alert" style="margin-top: 5em">Error! Failed to get historical charts data.</div>
+                <div *ngIf="isEmpty('Price') && !error" style="margin-top: 5em">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                            <span class="sr-only">45% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isEmpty('Price') && !error">
+                    <chart type="StockChart" [options]="stocks"></chart>
+                </div>
+            </div>
+            <div *ngIf="now == 'NewsFeeds'">
+                <div *ngIf="error || errorNews" class="alert alert-danger" role="alert" style="margin-top: 5em">Error! Failed to get news feed data.</div>
+                <div *ngIf="isEmpty('NEWS') && !error && !errorNews" style="margin-top: 5em">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                <span class="sr-only">45% Complete</span>
+                            </div>
+                        </div>
+                </div>
+                <div *ngIf="!isEmpty('NEWS') && !error && !errorNews">
+                    <div *ngFor="let news of data['NEWS']">
+                        <div class="jumbotron">
+                            <p style="margin-bottom: 5em"><b>
+                                <a href={{news.link}} target="_blank">
+                                    {{news.title}}
+                                </a>
+                            </b></p>
+                            <p><b>
+                                Author: {{news.author}}
+                            </b></p>
+                            <p><b>
+                                Date: {{news.date}}
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
