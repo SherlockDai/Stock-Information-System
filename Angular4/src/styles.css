@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 body{
-    background-image: url("http://cs-server.usc.edu:45678/hw/hw8/images/background.png");
+    margin-top: 2em;
+    background-image: url("./assets/background.jpg");
 }
 form{
     margin-top: 0.3em;

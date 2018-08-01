@@ -21,8 +21,8 @@ export class FavoriteComponent implements OnChanges, AfterViewInit{
         }
     toggleValue;
     tableList = [];
-    up_arrow = "http://cs-server.usc.edu:45678/hw/hw8/images/Up.png"
-    down_arrow = "http://cs-server.usc.edu:45678/hw/hw8/images/Down.png";
+    up_arrow = "../assets/green_arrow_up.png"
+    down_arrow = "../assets/red_arrow_down.png";
 
     ngAfterViewInit() {
         $('#my-toggle').bootstrapToggle();

@@ -34,7 +34,7 @@ export class StockDetailComponent implements OnChanges{
         if(changes.deleteSymbol != undefined){
             this.delete();
         }
-        if(changes.localFavorite != undefined){
+        if(changes.localFavorite && changes.localFavorite.currentValue != null){
             this.favoriteList = this.localFavorite;
             this.onReturn.emit(this.favoriteList);
         }
@@ -61,8 +61,8 @@ export class StockDetailComponent implements OnChanges{
     error = false;
     errorNews = false;
 
-    up_arrow = "http://cs-server.usc.edu:45678/hw/hw8/images/Up.png"
-    down_arrow = "http://cs-server.usc.edu:45678/hw/hw8/images/Down.png";
+    up_arrow = "../assets/green_arrow_up.png"
+    down_arrow = "../assets/red_arrow_down.png";
 
     constructor(private stockService: StockService){
         this.data = {
